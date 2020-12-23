@@ -6,7 +6,28 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="{% static 'js/bootstrap.js' %}">
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" defer src="{% static 'js/cart.js' %}"></script>
+    </script>
+    <script type="text/javascript">
+    	var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
     </script>
     <style media="screen">
     #cart-total{
@@ -19,9 +40,53 @@
       border-radius: 50%;
       font-size: 14px;
     }
+    #cart-icon{
+      width:50px;
+      display: inline-block;
 
-    </style>
-    <title>{% block title %}{% endblock %}</title>
+    }
+    .chg-quantity{
+      width:12px;
+    }
+    .quantity{
+	     display: inline-block;
+	     font-weight: 700;
+	     padding-right:10px;
+     }
+
+    .right{
+      margin-left: 20px;
+    }
+    .rightl{
+      margin-left: 25px;
+    }
+    .box-element{
+	     box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	     background-color: #fff;
+	     border-radius: 4px;
+	     padding: 10px;
+    }
+    .cart-row{
+      display: flex;
+      align-items: flex-stretch;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ececec;
+    }
+    .row-image{
+	     width: 300px;
+     }
+    .form-field{
+	 width:250px;
+	 display: inline-block;
+	 padding: 5px;
+  }
+    .thumbnail{
+      height:260px;
+      width:540px;
+    }
+   </style>
+   <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,25 +98,37 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
 
+          <div class="form-inline">
+            <div class="rightl">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
+              </li>
+            </div>
 
-      <div class="form-inline my-2 my-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item" style="position: relative;left: 15px;">
-          <a href="#"class="btn btn-warning">Login</a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'cart' %}" >
-            <img  id="cart-icon" style="height: 50px;width: 50px;position: relative;left: 45px;" src="{% static 'images/cart.png' %}">
-          </a>
+          </div>
 
-        </li>
-        <p id="cart-total" style="position: relative;left: 41px;">0</p>
-      </div>
+          <div class="form-inline my-2 my-lg-0 ">
+            <div class="right">
+                <a href="#"class="btn btn-warning">Login</a>
+            </div>
+          </div>
+
+
+            <div class="form-inline my-2 my-lg-0 ">
+              <div class="right">
+                <a href="{% url 'cart' %}">
+                  <img  id="cart-icon"  src="{% static 'images/cart.png' %}">
+                </a>
+              </div>
+                <p id="cart-total">{{cartItems}}</p>
+
+
+            </div>
+
 
   </div>
     </nav>
     {% block content %}{% endblock %}
+
   </body>
 </html>

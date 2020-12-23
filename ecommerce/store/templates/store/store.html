@@ -2,29 +2,26 @@
 {% load static %}
 {% block title %}store{% endblock %}
 {% block content %}
+{% load static %}
+{% for i in products %}
+
 <br>
 <div class="col-lg-4">
+	{% if i.image %}
+	<img class="thumbnail" src="{{ i.image }}">
+	{% else %}
 	<img class="thumbnail" src="{% static 'images/placeholder.png' %}">
+	{% endif %}
 	<div class="box-element product">
-		<h6><strong>Product</strong></h6>
-		<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
+		<h6><strong>{{i.name}}</strong></h6>
+		<button  class="btn btn-outline-secondary add-btn update-cart" data-product="{{i.id}}" data-action="add" id="update">Add to Cart</button>
 		<a class="btn btn-outline-success" href="#">View</a>
-		<h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
+		<h4 style="display: inline-block; float: right"><strong>{{i.price|floatformat:2}}£</strong></h4>
 
 	</div>
 </div>
+<hr>
 <br>
 <br>
-<div class="col-lg-4">
-	<img class="thumbnail" src="{% static 'images/placeholder.png' %}">
-	<div class="box-element product">
-		<h6><strong>Product</strong></h6>
-		<hr>
-
-		<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
-		<a class="btn btn-outline-success" href="#">View</a>
-		<h4 style="display: inline-block; float: right"><strong>$20</strong></h4>
-
-	</div>
-</div>
+{% endfor %}
 {% endblock %}

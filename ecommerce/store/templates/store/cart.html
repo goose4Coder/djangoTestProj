@@ -1,3 +1,48 @@
 {% extends 'store/base.html' %}
+{% load static %}
 {% block title %}cart{% endblock %}
-{% block content %}<h1>cart</h1>{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box-element">
+      <a class="btn btn-light" href="{% url 'store' %}">←Continue Shopping</a>
+      <hr>
+      <h3>Items:<strong>{{order.get_cart_items}}</strong></h3>
+      <h3>Total:<strong>{{order.get_cart_total| floatformat:2}}$</strong></h3>
+      <hr>
+      <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+		</div>
+
+		<br>
+			<div class="box-element">
+				<div class="cart-row">
+					<div style="flex:2"></div>
+					<div style="flex:2"><strong>Item</strong></div>
+					<div style="flex:1"><strong>Price</strong></div>
+					<div style="flex:1"><strong>Quantity</strong></div>
+					<div style="flex:1"><strong>Total</strong></div>
+				</div>
+				{% for i in items %}
+
+				<div class="cart-row">
+					{% if i.product.image%}
+					<div style="flex:2"><img class="row-image" src="{{i.product.image.url}}"></div>
+					{% else %}
+					<div style="flex:2"><p><img class="row-image" src="{% static 'images/placeholder.png' %}"></p></div>
+					{% endif %}
+					<div style="flex:2"><p>{{i.product.name}}</p></div>
+					<div style="flex:1"><p>{{i.product.price | floatformat:2}}$</p></div>
+					<div style="flex:1">
+						<p class="quantity">{{i.quantity}}</p>
+						<div class="quantity">
+								<img class="chg-quantity update-cart" data-product="{{i.product.id}}" data-action="add" id="update" src="{% static  'images/arrow-up.png' %}">
+								<img class="chg-quantity update-cart" data-product="{{i.product.id}}" data-action="remove" id="update"  src="{% static  'images/arrow-down.png' %}">
+						</div>
+					</div>
+					<div style="flex:1"><p>{{i.get_total| floatformat:2}}$</p></div>
+				</div>
+				{% endfor %}
+			</div>
+	</div>
+</div>
+{% endblock %}
