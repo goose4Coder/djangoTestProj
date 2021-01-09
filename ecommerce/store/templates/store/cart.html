@@ -31,7 +31,7 @@
 					<div style="flex:2"><p><img class="row-image" src="{% static 'images/placeholder.png' %}"></p></div>
 					{% endif %}
 					<div style="flex:2"><p>{{i.product.name}}</p></div>
-					<div style="flex:1"><p>{{i.product.price | floatformat:2}}$</p></div>
+					<div style="flex:1"><p>${{i.product.price | floatformat:2}}</p></div>
 					<div style="flex:1">
 						<p class="quantity">{{i.quantity}}</p>
 						<div class="quantity">

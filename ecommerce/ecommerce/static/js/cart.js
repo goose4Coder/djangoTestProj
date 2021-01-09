@@ -8,12 +8,13 @@ for (i = 0; i < updateBtns.length; i++) {
   var action = event.target.dataset.action;
   console.log('productId:', productId, 'Action:', action);
   if (user == 'AnonymousUser'){
-			console.log('User is not authenticated')
+			console.log('User is not authenticated');
 
 		}
     else{
-      console.log(user)
-			updateUserOrder(productId, action)
+      console.log(user);
+			updateUserOrder(productId, action);
+      addCookieItem(productId, action);
 		}
 
 });
@@ -37,4 +38,29 @@ function updateUserOrder(productId, action){
 		.then((data) => {
 		    console.log('Data:', data)
 		});
+}
+function addCookieItem(productId, action){
+	console.log('User is not authenticated')
+
+	if (action == 'add'){
+		if (cart[productId] == undefined){
+		cart[productId] = {'quantity':1}
+
+		}else{
+			cart[productId]['quantity'] += 1
+		}
+	}
+
+	if (action == 'remove'){
+		cart[productId]['quantity'] -= 1
+
+		if (cart[productId]['quantity'] <= 0){
+			console.log('Item should be deleted')
+			delete cart[productId];
+		}
+	}
+	console.log('CART:', cart)
+	document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+	location.reload()
 }
